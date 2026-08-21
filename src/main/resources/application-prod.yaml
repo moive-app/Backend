@@ -1,4 +1,7 @@
 spring:
+  server:
+    port: 8080
+
   datasource:
     url: ${DB_URL}
     username: ${DB_USERNAME}
@@ -10,5 +13,8 @@ spring:
       ddl-auto: validate
     show-sql: false
 
-server:
-  port: 8080
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
