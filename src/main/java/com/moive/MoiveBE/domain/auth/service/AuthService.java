@@ -22,7 +22,10 @@ public class AuthService {
         KakaoUserInfoResponse kakaoUser =
                 kakaoAuthService.getUserInfo(accessToken);
 
-        // 2. Kakao Member ID로 기존 활성 회원 조회
+        // 2. 카카오 필수 사용자 정보 검증
+        validateKakaoUserInfo(kakaoUser);
+
+        // 3. Kakao Member ID로 기존 활성 회원 조회
         boolean registered = userRepository
                 .findByKakaoMemberIdAndStatus(
                         kakaoUser.getId(),
@@ -30,7 +33,7 @@ public class AuthService {
                 )
                 .isPresent();
 
-        // 3. 기존/신규 여부와 카카오 프로필 정보 반환
+        // 4. 기존/신규 여부와 카카오 프로필 정보 반환
         return new KakaoLoginResponse(
                 registered,
                 kakaoUser.getProperties().getNickname(),
@@ -39,6 +42,7 @@ public class AuthService {
     }
 
     private void validateKakaoUserInfo(KakaoUserInfoResponse kakaoUser) {
+
         if (kakaoUser == null
                 || kakaoUser.getId() == null
                 || kakaoUser.getProperties() == null
